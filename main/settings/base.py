@@ -45,11 +45,12 @@ INSTALLED_APPS = [
     'dj_rest_auth',
     'users',
     'flight',
+    'debug_toolbar',
 
 ]
 
 MIDDLEWARE = [
-    # "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -57,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'main.urls'
