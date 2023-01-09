@@ -51,4 +51,10 @@ class FlightTestCase(APITestCase):
         self.assertContains(response, 'reservation')
         self.assertEqual(len(response.data), 1)
 
+    def test_flight_create_as_non_auth_user(self):
+        request = self.factory.post(
+            '/flight/flights/')
+        response = FlightView.as_view({'post': 'create'})(request)
+        self.assertEqual(response.status_code, 401)
+
 
