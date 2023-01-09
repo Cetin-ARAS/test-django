@@ -7,7 +7,12 @@ from rest_framework.authtoken.models import Token
 from flight.views import FlightView
 from flight.models import Flight
 
+from datetime import datetime, date
+
 class FlightTestCase(APITestCase):
+    now = datetime.now()
+    current_time = now.strftime('%H:%M:%S')
+    today = date.today()
 
     def setUp(self):
         self.factory = APIRequestFactory()
@@ -16,8 +21,8 @@ class FlightTestCase(APITestCase):
             operation_airlines = 'THY',
             departure_city = 'Adana',
             arrival_city = 'Kars',
-            date_of_departure = '2023-01-12', 
-            etd = '12:00:00',
+            date_of_departure = f'{self.today}', 
+            etd = f'{self.current_time}',
         )
         self.user = User.objects.create_user(
             username='admin',
@@ -33,6 +38,7 @@ class FlightTestCase(APITestCase):
         print(response)
         self.assertEquals(response.status_code, 200)
         self.assertNotContains(response, 'reservation')
+        self.assertEqual(len(response.data), 0)
         
     def test_flight_list_as_staff_user(self):
         request = self.factory.get('/flight/flights/', HTTP_AUTHORIZATION=f'Token {self.token}')
@@ -43,4 +49,6 @@ class FlightTestCase(APITestCase):
         response = FlightView.as_view({'get': 'list'})(request)
         self.assertEquals(response.status_code, 200)
         self.assertContains(response, 'reservation')
+        self.assertEqual(len(response.data), 1)
+
 
